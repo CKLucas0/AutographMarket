@@ -10,7 +10,22 @@ const items = [
   {brand:"Stüssy",item:"Logo cap",price:16,size:"One size",cond:"Good"},
   {brand:"Acne Studios",item:"Wool scarf",price:34,size:"One size",cond:"Very good"},
 ];
+document.querySelectorAll(".photo-slot").forEach(slot => {
+  const input = slot.querySelector(".photoInput");
+  const preview = slot.querySelector(".preview");
+  const plus = slot.querySelector(".plus");
 
+  slot.addEventListener("click", () => input.click());
+
+  input.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+    plus.style.display = "none";
+  });
+});
 const grid = document.getElementById('grid');
 function renderGrid(){
   grid.innerHTML = items.map(it => `
