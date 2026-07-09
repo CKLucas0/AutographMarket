@@ -15,7 +15,20 @@ function randomImage(){
 }
 
 function randomprice(){
-  return Math.floor(Math.random() * 280) + 20;
+  if (Math.floor(Math.random()*10) < 7) {
+    return {price: Math.floor(Math.random() * 280) + 20};
+  }
+  else {
+    var oldprice =  Math.floor(Math.random() * 280) + 20
+    var discount = (Math.floor(Math.random()*30)+10)/100
+    var newprice = Math.floor(oldprice * discount)
+
+    return {
+      price: newprice,
+      was: oldprice,
+      tag: `-${Math.round(discount*100)}%`
+    }
+  }
 }
 
 function randomdiscount(){
@@ -23,37 +36,45 @@ function randomdiscount(){
     return false
   }
   else {
-    return `-${Math.floor(Math.random()*30)+10}%`
+    return Math.floor(Math.random()*30)+10
   } 
 }
 
+function randomcondition() {
+  const conditions = [
+    "Brand new with tags","Like new","Very good","Worn"
+  ];
+  return conditions[Math.floor(Math.random() * conditions.length)];
+}
+
+function randomproduct() {
+  const products = [
+    "football","shirt","shorts","sneakers","jacket","hoodie","cap","socks","gloves","scarf"
+  ];
+  const sizes = ["XS","S","M","L","XL","XXL"];
+  var item =  products[Math.floor(Math.random() * products.length)];
+  if (item == "shirt" || item == "shorts" || item == "jacket" || item == "hoodie") {
+    return {
+      product: item,
+      size: sizes[Math.floor(Math.random() * sizes.length)]
+    };
+  }
+  else {
+    return { product: item };
+  }
+}
+
+function make_item() {
+  items.push({sign:randomName(),...randomproduct(),...randomprice(),cond:randomcondition(),photo:randomImage()});
+}
+
+
 const items = [
-  {sign:"Carhartt WIP",product:"Detroit jacket",price:42,was:68,cond:"Good",tag:"−38%",photo:randomImage()},
-  {sign:"Levi's",product:"501 straight jeans",price:randomprice(),size:"32/32",cond:"Very good",photo:"test.png"},
-  {sign:"Arc'teryx",product:"Beta rain shell",price:randomprice(),size:"L",cond:"Like new",photo:"test2.png"},
-  {sign:"COS",product:"Wool crewneck",price:18,was:29,size:"S",cond:"Good",tag:"−38%"},
-  {sign:"Dr. Martens",product:"1460 boots",price:randomprice(),size:"EU42",cond:"Very good"},
-  {sign:"Uniqlo",product:"Fleece pullover",price:randomprice(),size:"M",cond:"Good"},
-  {sign:"Patagonia",product:"Better Sweater vest",price:randomprice(),size:"L",cond:"Very good"},
-  {sign:"Ganni",product:"Printed midi skirt",price:29,was:45,size:"S",cond:"Like new",tag:"−30%"},
-  {sign:"Stüssy",product:"Logo cap",price:randomprice(),size:"One size",cond:"Good"},
-  {sign:"Acne Studios",product:"Wool scarf",price:randomprice(),size:"One size",cond:"Very good"},
-  {sign:"Carhartt WIP",product:"Detroit jacket",price:42,was:68,size:"M",cond:"Good",tag:"−38%"},
-  {sign:"Levi's",product:"501 straight jeans",price:randomprice(),size:"32/32",cond:"Very good"},
-  {sign:"Arc'teryx",product:"Beta rain shell",price:randomprice(),size:"L",cond:"Like new"},
-  {sign:"COS",product:"Wool crewneck",price:18,was:29,size:"S",cond:"Good",tag:"−38%"},
-  {sign:"Dr. Martens",product:"1460 boots",price:randomprice(),size:"EU42",cond:"Very good"},
-  {sign:"Uniqlo",product:"Fleece pullover",price:randomprice(),size:"M",cond:"Good"},
-  {sign:"Patagonia",product:"Better Sweater vest",price:randomprice(),size:"L",cond:"Very good"},
-  {sign:"Ganni",product:"Printed midi skirt",price:randomprice(),size:"S",cond:"Like new"},
-  {sign:"Stüssy",product:"Logo cap",price:randomprice(),size:"One size",cond:"Good"},
-  {sign:"Acne Studios",product:"Wool scarf",price:randomprice(),size:"One size",cond:"Very good"},
-  {sign:"Carhartt WIP",product:"Detroit jacket",price:randomprice(),size:"M",cond:"Good"},
-  {sign:"Levi's",product:"501 straight jeans",price:randomprice(),size:"32/32",cond:"Very good"},
-  {sign:"Arc'teryx",product:"Beta rain shell",price:randomprice(),size:"L",cond:"Like new"},
-  {sign:"COS",product:"Wool crewneck",price:18,was:29,size:"S",cond:"Good",tag:"−38%"},
-  {sign:"Dr. Martens",product:"1460 boots",price:randomprice(),size:"EU42",cond:"Very good"},
 ];
+
+for (let i = 0; i < 100; i++) {
+  make_item();
+}
 
 const grid = document.getElementById('grid');
 function renderGrid(){
