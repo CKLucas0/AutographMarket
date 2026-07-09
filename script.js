@@ -1,19 +1,15 @@
-/*need to make this automated, so that the price is random between 20 and 300 and the name and image is random*/
-
 function randomName(){
   const randomNames = [
     "ronaldo", "messi", "neymar", "mbappe", "salah", "modric", "kane", "de bruyne", "pogba", "hazard","lewandowski", "suarez", "griezmann", "sterling", "mane", "aguero", "cavani", "dzeko", "higuain", "benzema"
   ];
   return randomNames[Math.floor(Math.random() * randomNames.length)];
 }
-
 function randomImage(){
   const images = [
     "placeholder1.png", "placeholder2.png", "placeholder3.png"
   ];
   return images[Math.floor(Math.random() * images.length)];
 }
-
 function randomprice(){
   if (Math.floor(Math.random()*10) < 7) {
     return {price: Math.floor(Math.random() * 280) + 20};
@@ -21,7 +17,7 @@ function randomprice(){
   else {
     var oldprice =  Math.floor(Math.random() * 280) + 20
     var discount = (Math.floor(Math.random()*30)+10)/100
-    var newprice = Math.floor(oldprice * discount)
+    var newprice = oldprice-Math.floor(oldprice * discount)
 
     return {
       price: newprice,
@@ -30,7 +26,6 @@ function randomprice(){
     }
   }
 }
-
 function randomdiscount(){
   if (Math.floor(Math.random()*10) < 7) {
     return false
@@ -39,14 +34,12 @@ function randomdiscount(){
     return Math.floor(Math.random()*30)+10
   } 
 }
-
 function randomcondition() {
   const conditions = [
     "Brand new with tags","Like new","Very good","Worn"
   ];
   return conditions[Math.floor(Math.random() * conditions.length)];
 }
-
 function randomproduct() {
   const products = [
     "football","shirt","shorts","sneakers","jacket","hoodie","cap","socks","gloves","scarf"
@@ -63,16 +56,12 @@ function randomproduct() {
     return { product: item };
   }
 }
-
 function make_item() {
   items.push({sign:randomName(),...randomproduct(),...randomprice(),cond:randomcondition(),photo:randomImage()});
 }
-
-
-const items = [
+var items = [
 ];
-
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1; i++) {
   make_item();
 }
 
@@ -126,6 +115,8 @@ function showBrowse(e){
 document.getElementById('sell-link').addEventListener('click', showSell);
 document.getElementById('back-link').addEventListener('click', showBrowse);
 document.getElementById('logo-link').addEventListener('click', showBrowse);
+document.getElementById('submit-button').addEventListener('click', showBrowse);
+document.getElementById('submit-button').addEventListener('click', make_item);
 
 // publishing a new listing
 const toast = document.getElementById('toast');
@@ -147,3 +138,4 @@ document.getElementById('sell-form').addEventListener('submit', (e) => {
   setTimeout(() => toast.classList.remove('show'), 2200);
   showBrowse();
 });
+

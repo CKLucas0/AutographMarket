@@ -127,7 +127,7 @@ footer{
 .field input, .field select, .field textarea{
   width:100%;border:1px solid var(--line);border-radius:9px;
   padding:11px 13px;font-size:14px;font-family:'Inter',sans-serif;
-  background:#fff;color:var(--ink);
+  background:#fff;color:var(--paper);
 }
 .field input:focus, .field select:focus, .field textarea:focus{
   outline:none;border-color:var(--bronze);
