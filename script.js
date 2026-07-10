@@ -66,10 +66,11 @@ function make_item() {
   items.push({sign:randomName(),...randomproduct(),...randomprice(),cond:randomcondition(),photo:randomImage(), category:randomcategory()});
 }
 var items = [];
-for (let i = 0; i < 25; i++) {make_item();}
+for (let i = 0; i < 50; i++) {make_item();}
 
+chipText = "All"
 const grid = document.getElementById('grid');
-function renderGrid(category){
+function renderGrid(category,search){
   let filtereditems;
   if (category == "All") {
     filtereditems = items;
@@ -77,6 +78,7 @@ function renderGrid(category){
   else {
     filtereditems = items.filter(item => item.category == category);
   }
+  filtereditems = filtereditems.filter(item => item.sign.toLowerCase().includes(search.toLowerCase()))
   
   grid.innerHTML = filtereditems.map(it => `
     <div class="card">
@@ -97,7 +99,7 @@ function renderGrid(category){
     </div>
   `).join('');
 }
-renderGrid("All");
+renderGrid("All",document.getElementById("search-input").value);
 
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
@@ -105,18 +107,20 @@ document.querySelectorAll('.chip').forEach(chip => {
     chip.classList.add('active');
 
     const chipText = chip.textContent;
-    renderGrid(chipText)
+    renderGrid(chipText,document.getElementById("search-input").value)
 
   });
 });
 
 // view switching between browse and sell
 const browseView = document.getElementById('browse-view');
+const browseViewSearch = document.getElementById('browse-view-search');
 const sellView = document.getElementById('sell-view');
 
 function showSell(e){
   if(e) e.preventDefault();
   browseView.classList.add('hidden');
+  browseViewSearch.classList.add('hidden');
   sellView.classList.remove('hidden');
   window.scrollTo(0,0);
 }
@@ -124,6 +128,8 @@ function showBrowse(e){
   if(e) e.preventDefault();
   sellView.classList.add('hidden');
   browseView.classList.remove('hidden');
+  browseViewSearch.classList.remove('hidden');
+  document.getElementById("search-input").value = ""
   window.scrollTo(0,0);
 }
 
@@ -150,7 +156,7 @@ document.getElementById('sell-form').addEventListener('submit', async (e) => {
     photo: photoData,
   };
   items.unshift(newItem);
-  renderGrid("All");
+  renderGrid("All",document.getElementById("search-input").value);
   e.target.reset();
   const slot = document.getElementById('photo-slot-label');
   slot.innerHTML = '+';
@@ -185,4 +191,7 @@ document.getElementById('f-photo').addEventListener('change', (e) => {
     slot.style.backgroundPosition = 'center';
   };
   reader.readAsDataURL(file);
+});
+document.getElementById('search-input').addEventListener('input', (e) => {
+  renderGrid(chipText,e.target.value)
 });

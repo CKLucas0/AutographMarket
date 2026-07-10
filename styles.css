@@ -32,6 +32,18 @@ header{
   padding:9px 16px;color:var(--stone);font-size:14px;
 }
 .search svg{flex-shrink:0;}
+.search input{
+  border:none;
+  outline:none;
+  background:transparent;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  color:var(--paper);
+  width:100%;
+}
+.search input::placeholder{
+  color:var(--stone);
+}
 .sell-btn{
   background:var(--bronze);color:#fff;padding:9px 18px;border-radius:999px;
   font-size:14px;font-weight:500;margin-left:auto;
