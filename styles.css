@@ -7,6 +7,7 @@
   --gold:#D3AC64;
   --line:#242220;
   --card:#161514;
+  --glow:#ffffffd4;
 }
 *{box-sizing:border-box;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;}
@@ -48,6 +49,9 @@ header{
 }
 .chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
 
+.chip:hover {box-shadow:0 8px 20px var(--glow);transform: scale(1.03);}
+
+
 /* grid */
 main{padding:28px 32px 60px;}
 .section-label{
@@ -63,7 +67,7 @@ main{padding:28px 32px 60px;}
   background:var(--card);border:1px solid var(--line);border-radius:14px;
   overflow:hidden;transition:box-shadow .15s ease, transform .15s ease;
 }
-.card:hover{box-shadow:0 8px 20px rgba(28,28,26,0.08);transform: scale(1.03);}
+.card:hover{box-shadow:0 8px 20px var(--glow);transform: scale(1.03);}
 .thumb{
   aspect-ratio:3/4;background:linear-gradient(135deg,#EFEAE1,#E2DCCF);
   position:relative;display:flex;align-items:center;justify-content:center;

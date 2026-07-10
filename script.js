@@ -58,7 +58,7 @@ function randomproduct() {
 }
 function randomcategory() {
   const categorys = [
-    "Sport", "Actors", 
+    "Sport", "Actors", "Singers", "Other"
   ]
   return categorys[Math.floor(Math.random()*categorys.length)]
 }
@@ -66,11 +66,19 @@ function make_item() {
   items.push({sign:randomName(),...randomproduct(),...randomprice(),cond:randomcondition(),photo:randomImage(), category:randomcategory()});
 }
 var items = [];
-for (let i = 0; i < 10; i++) {make_item();}
+for (let i = 0; i < 25; i++) {make_item();}
 
 const grid = document.getElementById('grid');
-function renderGrid(){
-  grid.innerHTML = items.map(it => `
+function renderGrid(category){
+  let filtereditems;
+  if (category == "All") {
+    filtereditems = items;
+  }
+  else {
+    filtereditems = items.filter(item => item.category == category);
+  }
+  
+  grid.innerHTML = filtereditems.map(it => `
     <div class="card">
       <div class="thumb">
         ${it.tag ? `<div class="tag">${it.tag}</div>` : ''}
@@ -89,12 +97,16 @@ function renderGrid(){
     </div>
   `).join('');
 }
-renderGrid();
+renderGrid("All");
 
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
     document.querySelector('.chip.active').classList.remove('active');
     chip.classList.add('active');
+
+    const chipText = chip.textContent;
+    renderGrid(chipText)
+
   });
 });
 
@@ -134,11 +146,11 @@ document.getElementById('sell-form').addEventListener('submit', async (e) => {
     price: Number(document.getElementById('f-price').value) || 0,
     size: document.getElementById('f-size').value || '',
     cond: document.getElementById('f-condition').value,
-    category: document.getElementById("f-condition"),
+    category: document.getElementById("f-category").value,
     photo: photoData,
   };
   items.unshift(newItem);
-  renderGrid();
+  renderGrid("All");
   e.target.reset();
   const slot = document.getElementById('photo-slot-label');
   slot.innerHTML = '+';
