@@ -35,7 +35,6 @@ async function uploadPhoto(blob){
 }
 
 
-let chipText = "All"
 const grid = document.getElementById('grid');
 function renderGrid(category,search){
   let filtereditems;
@@ -46,42 +45,53 @@ function renderGrid(category,search){
     filtereditems = items.filter(item => item.category == category);
   }
   filtereditems = filtereditems.filter(item => item.sign.toLowerCase().includes(search.toLowerCase()))
+  if (filterValueCond != "All conditions") {
+    filtereditems = filtereditems.filter(item => item.cond == filterValueCond);
+  }
+  if (PriceRangeMin != 0) {
+    filtereditems = filtereditems.filter(item => item.price >= PriceRangeMin);
+  }
+  if (PriceRangeMax != 0) {
+    filtereditems = filtereditems.filter(item => item.price <= PriceRangeMax);
+  }
   
   grid.innerHTML = filtereditems.map(it => `
     <div class="card">
-      <div class="thumb">
-        ${it.tag ? `<div class="tag">${it.tag}</div>` : ''}
-        <div class="heart">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8A82" stroke-width="2">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+    <div class="thumb">
+    ${it.tag ? `<div class="tag">${it.tag}</div>` : ''}
+    <div class="heart">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8A82" stroke-width="2">
+    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
           </svg>
-        </div>
-        <img class="photo_card" src="${it.photo ? it.photo : 'logo black.png'}">
-      </div>
-      <div class="info">
-        <div class="price">€${it.price}${it.was ? `<span class="was">€${it.was}</span>` : ''}</div>
-        <div class="sign">${it.sign}</div>
-        <div class="meta">${it.product} · ${it.size? `<span class="was">${it.size} ·</span>` : ''}  ${it.cond}</div>
-      </div>
-    </div>
-  `).join('');
-}
-var items = [];
-
-async function loadListings(){
-  const { data, error } = await supabaseClient
-    .from('listings')
-    .select()
-    .order('created_at', { ascending: false });
-
-  if (error){
-    console.error(error);
-    return;
-  }
-  items = data;
-  renderGrid("All", document.getElementById("search-input").value);
-}
-loadListings()
+          </div>
+          <img class="photo_card" src="${it.photo ? it.photo : 'logo black.png'}">
+          </div>
+          <div class="info">
+          <div class="price">€${it.price}${it.was ? `<span class="was">€${it.was}</span>` : ''}</div>
+          <div class="sign">${it.sign}</div>
+          <div class="meta">${it.product} · ${it.size? `<span class="was">${it.size} ·</span>` : ''}  ${it.cond}</div>
+          </div>
+          </div>
+          `).join('');
+        }
+        var items = [];
+        
+        async function loadListings(){
+          const { data, error } = await supabaseClient
+          .from('listings')
+          .select()
+          .order('created_at', { ascending: false });
+          
+          if (error){
+            console.error(error);
+            return;
+          }
+          items = data;
+          renderGrid("All", document.getElementById("search-input").value);
+        }
+        loadListings()
+        
+let chipText = "All"
 
 document.querySelectorAll('.chip').forEach(chip => {
   chip.addEventListener('click', () => {
@@ -93,12 +103,48 @@ document.querySelectorAll('.chip').forEach(chip => {
 
   });
 });
+// filtering values
+var filterValueCond = "All conditions";
+
+document.getElementById('filter-condition').addEventListener('change', (e) => {
+  filterValueCond = e.target.value;
+  renderGrid(chipText, document.getElementById("search-input").value);
+});
+
+var PriceRangeMin = 0;
+var PriceRangeMax = 0;
+
+document.getElementById('price-min').addEventListener('input', (e) => {
+  PriceRangeMin = e.target.value
+  if (PriceRangeMin == 0) {
+    document.getElementById("price-min").value = ""
+    PriceRangeMin = 0
+  }
+  renderGrid(chipText,document.getElementById("search-input").value)
+});
+
+document.getElementById('price-max').addEventListener('input', (e) => {
+  PriceRangeMax = e.target.value
+  if (PriceRangeMax == 0) {
+    document.getElementById("price-max").value = ""
+    PriceRangeMax = 0
+  }
+  renderGrid(chipText,document.getElementById("search-input").value)
+});
+
 // view switching between browse and sell
 const browseView = document.getElementById('browse-view');
 const browseViewSearch = document.getElementById('browse-view-search');
 const sellView = document.getElementById('sell-view');
 const registerView = document.getElementById('register-view');
 const loginView = document.getElementById('login-view');
+const filterToggle = document.getElementById('filter-toggle');
+const filterPanel = document.getElementById('filter-panel');
+
+filterToggle.addEventListener('click', () => {
+  filterPanel.classList.toggle('hidden');
+  filterToggle.classList.toggle('open');
+});
 
 function hideAllViews(){
   browseView.classList.add('hidden');
@@ -146,6 +192,8 @@ document.getElementById('register-back-link').addEventListener('click', showBrow
 document.getElementById('login-back-link').addEventListener('click', showBrowse);
 document.getElementById('go-to-login').addEventListener('click', showLogin);
 document.getElementById('go-to-register').addEventListener('click', showRegister);
+
+
 
 // sign up
 document.getElementById('register-form').addEventListener('submit', async (e) => {

@@ -22,15 +22,53 @@
   </div>
   <a href="#" class="sell-btn" id="sell-link">Sell an item</a>
 </header>
-
 <div id="browse-view">
-  <div class="chips">
-    <div class="chip active">All</div>
-    <div class="chip">Sport</div>
-    <div class="chip">Actors</div>
-    <div class="chip">Singers</div>
-    <div class="chip">Other</div>
-  </div>
+  <div class="toolbar">
+    <div class="chips">
+      <div class="chip active">All</div>
+      <div class="chip">Sport</div>
+      <div class="chip">Actors</div>
+      <div class="chip">Singers</div>
+      <div class="chip">Other</div>
+    </div>
+
+    <div class="filter-bar">
+      <button id="filter-toggle" class="filter-btn" type="button">
+        Filters
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="filter-arrow">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+
+      <div id="filter-panel" class="filter-panel hidden">
+        <div class="field">
+          <label for="filter-condition">Condition</label>
+          <select id="filter-condition">
+            <option>All conditions</option>
+            <option>Brand new with tags</option>
+            <option>Like New</option>
+            <option>Very good</option>
+            <option>Good</option>
+            <option>Used</option>
+          </select>
+          <label for="filter-price">Price</label>
+
+          <label>Price range</label>
+          <div class="price-range-row">
+            <div class="price-field">
+              <span>€</span>
+              <input type="number" id="price-min" placeholder="Min" min="0">
+            </div>
+            <span class="range-dash">–</span>
+            <div class="price-field">
+              <span>€</span>
+              <input type="number" id="price-max" placeholder="Max" min="0">
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
 
   <main>
     <div class="section-label">All listings</div>
@@ -52,20 +90,20 @@
       </div>
       <div class="field">
         <label for="f-title">Title</label>
-        <input id="f-title" type="text" placeholder="e.g. Carhartt WIP Detroit jacket" required>
+        <input id="f-title" type="text" placeholder="e.g. Signed Ballon d'Or photo" required>
       </div>
 
-      <div class="field-row">  
+      <div class="field-row">
         <div class="field">
-          <label for="f-sign">Brand</label>
-          <input id="f-sign" type="text" placeholder="e.g. Levi's" required>
+          <label for="f-sign">Signed by</label>
+          <input id="f-sign" type="text" placeholder="e.g. Lionel Messi" required>
         </div>
         <div class="field">
           <label for="f-category">Category</label>
           <select id="f-category">
             <option>Sport</option>
             <option>Actors</option>
-            <option>singers</option>
+            <option>Singers</option>
             <option>Other</option>
           </select>
         </div>
@@ -73,8 +111,8 @@
 
       <div class="field-row">
         <div class="field">
-          <label for="f-size">Size</label>
-          <input id="f-size" type="text" placeholder="e.g. M, 32/32, EU42">
+          <label for="f-size">Format</label>
+          <input id="f-size" type="text" placeholder="e.g. 8x10 photo, jersey, vinyl, poster">
         </div>
         <div class="field">
           <label for="f-condition">Condition</label>
@@ -89,8 +127,7 @@
       </div>
 
       <div class="field">
-        <label for="f-price">Price <span class="hint">
-        </span></label>
+        <label for="f-price">Price</label>
         <div class="price-field">
           <span>€</span>
           <input id="f-price" type="number" min="1" placeholder="25" required>
@@ -99,7 +136,7 @@
 
       <div class="field">
         <label for="f-desc">Description</label>
-        <textarea id="f-desc" placeholder="Fit, fabric, any wear worth mentioning…"></textarea>
+        <textarea id="f-desc" placeholder="Where and when it was signed, any certificate of authenticity, condition details worth mentioning…"></textarea>
       </div>
 
       <button type="submit" class="publish-btn" id="submit-button">Publish listing</button>
